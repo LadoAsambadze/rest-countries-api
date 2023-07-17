@@ -1,7 +1,18 @@
 import { styled } from "styled-components";
 import "./App.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [data, setData] = useState([]);
+  const fetchData = async () => {
+    const response = await axios.get("https://restcountries.com/v3.1/all");
+    setData(response.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <Header>
@@ -34,22 +45,28 @@ function App() {
             <RegionName>Oceania</RegionName>
           </RegionList>
         </SearchSection>
+
         <FlagSection>
-          <FlagDiv>
-            <Flag src="flag.png" />
-            <InfoDiv>
-              <Name>Germany</Name>
-              <About>
-                <strong>Population:</strong> 81,770,900
-              </About>
-              <About>
-                <strong>Region:</strong> Europe
-              </About>
-              <About>
-                <strong>Capital:</strong> Berlin
-              </About>
-            </InfoDiv>
-          </FlagDiv>
+          {data.map((item, index) => (
+            <FlagDiv key={index}>
+              <Flag src={item.flags.png} alt={item.flags.alt} />
+              <InfoDiv>
+                <Name>{item.name.common}</Name>
+                <About>
+                  <strong>Population: </strong>
+                  {item.population}
+                </About>
+                <About>
+                  <strong>Region: </strong>
+                  {item.region}
+                </About>
+                <About>
+                  <strong>Capital: </strong>
+                  {item.capital}
+                </About>
+              </InfoDiv>
+            </FlagDiv>
+          ))}
         </FlagSection>
       </Main>
     </>
@@ -233,19 +250,32 @@ const FlagSection = styled.section`
   display: grid;
   justify-content: center;
   grid-template-rows: repeat(1, 1fr);
-  row-gap: 40px;
+  row-gap: 28px;
   margin-top: 28px;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+  @media (min-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+  }
+  @media (min-width: 1440px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 const FlagDiv = styled.div`
   background: #fff;
   box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.03);
   width: 267px;
-
+  height: 336px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
   overflow: hidden;
+  margin: auto;
 `;
 
 const Flag = styled.img``;
