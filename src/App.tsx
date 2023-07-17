@@ -12,23 +12,28 @@ function App() {
         </ModeDiv>
       </Header>
       <Main>
-        <SearchbarMain>
-          <SearchField>
-            <SearchIcon src="public/search-icon.svg" alt="search icon, loop" />
-            <SearchInput placeholder="Search for a country…" />
-          </SearchField>
-        </SearchbarMain>
-        <FilterField>
-          <Region>Filter by Region</Region>
-          <Arrow src="public/arrow.svg" alt="arrow button" />
-        </FilterField>
-        <RegionList>
-          <RegionName>Africa</RegionName>
-          <RegionName>America</RegionName>
-          <RegionName>Asia</RegionName>
-          <RegionName>Europe</RegionName>
-          <RegionName>Oceania</RegionName>
-        </RegionList>
+        <SearchSection>
+          <SearchbarMain>
+            <SearchField>
+              <SearchIcon
+                src="public/search-icon.svg"
+                alt="search icon, loop"
+              />
+              <SearchInput placeholder="Search for a country…" />
+            </SearchField>
+          </SearchbarMain>
+          <FilterField>
+            <Region>Filter by Region</Region>
+            <Arrow src="public/arrow.svg" alt="arrow button" />
+          </FilterField>
+          <RegionList>
+            <RegionName>Africa</RegionName>
+            <RegionName>America</RegionName>
+            <RegionName>Asia</RegionName>
+            <RegionName>Europe</RegionName>
+            <RegionName>Oceania</RegionName>
+          </RegionList>
+        </SearchSection>
       </Main>
     </>
   );
@@ -94,6 +99,20 @@ const Main = styled.div`
   flex-direction: column;
   padding: 24px 16px 65px 24px;
   background: #fafafa;
+  @media (min-width: 1440px) {
+    padding: 48px 80px 45px 80px;
+  }
+`;
+
+const SearchSection = styled.section`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 1440px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 `;
 
 const SearchbarMain = styled.div`
@@ -103,12 +122,18 @@ const SearchbarMain = styled.div`
   border-radius: 5px;
   background: #fff;
   box-shadow: 0px 2px 9px 0px rgba(0, 0, 0, 0.05);
+  @media (min-width: 1440px) {
+    flex-direction: row;
+  }
 `;
 
 const SearchField = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  @media (min-width: 1440px) {
+    padding-right: 20px;
+  }
 `;
 
 const SearchIcon = styled.img`
@@ -127,6 +152,9 @@ const SearchInput = styled.input`
   font-weight: 400;
   line-height: 20px;
   outline: none;
+  @media (min-width: 1440px) {
+    width:400px;
+  }
 `;
 
 const FilterField = styled.div`
@@ -139,6 +167,10 @@ const FilterField = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media (min-width: 1440px) {
+    width: 10%;
+    margin: 0;
+  }
 `;
 
 const Region = styled.span`
@@ -167,6 +199,7 @@ const RegionList = styled.div`
   box-shadow: 0px 2px 9px 0px rgba(0, 0, 0, 0.05);
   margin-top: 4px;
   width: 45%;
+  display: none;
 `;
 
 const RegionName = styled.span`
