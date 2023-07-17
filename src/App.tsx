@@ -34,6 +34,23 @@ function App() {
             <RegionName>Oceania</RegionName>
           </RegionList>
         </SearchSection>
+        <FlagSection>
+          <FlagDiv>
+            <Flag src="flag.png" />
+            <InfoDiv>
+              <Name>Germany</Name>
+              <About>
+                <strong>Population:</strong> 81,770,900
+              </About>
+              <About>
+                <strong>Region:</strong> Europe
+              </About>
+              <About>
+                <strong>Capital:</strong> Berlin
+              </About>
+            </InfoDiv>
+          </FlagDiv>
+        </FlagSection>
       </Main>
     </>
   );
@@ -153,7 +170,7 @@ const SearchInput = styled.input`
   line-height: 20px;
   outline: none;
   @media (min-width: 1440px) {
-    width:400px;
+    width: 400px;
   }
 `;
 
@@ -210,4 +227,52 @@ const RegionName = styled.span`
   line-height: 16px;
   margin-bottom: 8px;
   cursor: pointer;
+`;
+
+const FlagSection = styled.section`
+  display: grid;
+  justify-content: center;
+  grid-template-rows: repeat(1, 1fr);
+  row-gap: 40px;
+  margin-top: 28px;
+`;
+
+const FlagDiv = styled.div`
+  background: #fff;
+  box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.03);
+  width: 267px;
+
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  overflow: hidden;
+`;
+
+const Flag = styled.img``;
+
+const InfoDiv = styled.div`
+  padding: 24px 0px 38px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const Name = styled.span`
+  color: #111517;
+  font-family: Nunito Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 26px;
+  margin-bottom: 16px;
+`;
+
+const About = styled.span`
+  color: #111517;
+  font-family: Nunito Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 16px;
+  margin-bottom: 8px;
 `;
