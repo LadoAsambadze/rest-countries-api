@@ -5,6 +5,13 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [data, setData] = useState([]);
+  const [active, setActive] = useState(false);
+  const [content, setContent] = useState("Filter by Regions");
+
+  const filterHandler = (e) => {
+    setContent(e.target.textContent);
+    setActive(!active);
+  };
   const fetchData = async () => {
     const response = await axios.get("https://restcountries.com/v3.1/all");
     setData(response.data);
@@ -34,18 +41,17 @@ function App() {
             </SearchField>
           </SearchbarMain>
           <FilterField>
-            <Region>Filter by Region</Region>
+            <Region onClick={() => setActive(!active)}>{content}</Region>
             <Arrow src="public/arrow.svg" alt="arrow button" />
+            <RegionList style={{ display: active ? "flex" : "none" }}>
+              <RegionName onClick={filterHandler}>Africa</RegionName>
+              <RegionName onClick={filterHandler}>America</RegionName>
+              <RegionName onClick={filterHandler}>Asia</RegionName>
+              <RegionName onClick={filterHandler}>Europe</RegionName>
+              <RegionName onClick={filterHandler}>Oceania</RegionName>
+            </RegionList>
           </FilterField>
-          <RegionList>
-            <RegionName>Africa</RegionName>
-            <RegionName>America</RegionName>
-            <RegionName>Asia</RegionName>
-            <RegionName>Europe</RegionName>
-            <RegionName>Oceania</RegionName>
-          </RegionList>
         </SearchSection>
-
         <FlagSection>
           {data.map((item, index) => (
             <FlagDiv key={index}>
@@ -98,7 +104,6 @@ const Question = styled.span`
     font-size: 24px;
   }
 `;
-
 const ModeDiv = styled.div`
   display: flex;
   flex-direction: row;
@@ -201,6 +206,8 @@ const FilterField = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+
   @media (min-width: 1440px) {
     width: 10%;
     margin: 0;
@@ -232,8 +239,12 @@ const RegionList = styled.div`
   background: #fff;
   box-shadow: 0px 2px 9px 0px rgba(0, 0, 0, 0.05);
   margin-top: 4px;
-  width: 45%;
-  display: none;
+  width: 80%;
+  left: 0;
+  top: 55px;
+  position: absolute;
+  @media (min-width: 1440px) {
+  }
 `;
 
 const RegionName = styled.span`
@@ -263,6 +274,8 @@ const FlagSection = styled.section`
   }
   @media (min-width: 1440px) {
     grid-template-columns: repeat(4, 1fr);
+    gap: 70px;
+    margin-top: 48px;
   }
 `;
 
