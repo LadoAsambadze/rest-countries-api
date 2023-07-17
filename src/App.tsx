@@ -8,6 +8,7 @@ function App() {
   const [active, setActive] = useState(false);
   const [content, setContent] = useState("Filter by Regions");
   const [name, setName] = useState("");
+  console.log(data);
 
   const filterHandler = (e) => {
     setContent(e.target.textContent);
@@ -45,12 +46,15 @@ function App() {
               />
             </SearchField>
           </SearchbarMain>
-          <FilterField>
-            <Region onClick={() => setActive(!active)}>{content}</Region>
+          <FilterField onClick={() => setActive(!active)}>
+            <Region>{content}</Region>
             <Arrow src="public/arrow.svg" alt="arrow button" />
             <RegionList style={{ display: active ? "flex" : "none" }}>
+              <RegionName onClick={filterHandler}>
+                Filter by Regions(All)
+              </RegionName>
               <RegionName onClick={filterHandler}>Africa</RegionName>
-              <RegionName onClick={filterHandler}>America</RegionName>
+              <RegionName onClick={filterHandler}>Americas</RegionName>
               <RegionName onClick={filterHandler}>Asia</RegionName>
               <RegionName onClick={filterHandler}>Europe</RegionName>
               <RegionName onClick={filterHandler}>Oceania</RegionName>
@@ -59,6 +63,15 @@ function App() {
         </SearchSection>
         <FlagSection>
           {data
+            .filter((item) => {
+              if (content && content !== "Filter by Regions(All)") {
+                return (
+                  item.region.toLowerCase() === content.toLocaleLowerCase()
+                );
+              } else {
+                return true;
+              }
+            })
             .filter((item) =>
               item.name.common.toLowerCase().includes(name.toLowerCase())
             )
@@ -187,7 +200,6 @@ const SearchField = styled.div`
 const SearchIcon = styled.img`
   width: 16px;
   height: 16px;
-  cursor: pointer;
 `;
 
 const SearchInput = styled.input`
@@ -216,7 +228,7 @@ const FilterField = styled.div`
   justify-content: space-between;
   align-items: center;
   position: relative;
-
+  cursor: pointer;
   @media (min-width: 1440px) {
     width: 10%;
     margin: 0;
@@ -230,13 +242,11 @@ const Region = styled.span`
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  cursor: pointer;
 `;
 
 const Arrow = styled.img`
   width: 10px;
   height: 10px;
-  cursor: pointer;
 `;
 
 const RegionList = styled.div`
