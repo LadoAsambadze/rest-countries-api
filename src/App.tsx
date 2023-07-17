@@ -7,11 +7,13 @@ function App() {
   const [data, setData] = useState([]);
   const [active, setActive] = useState(false);
   const [content, setContent] = useState("Filter by Regions");
+  const [name, setName] = useState("");
 
   const filterHandler = (e) => {
     setContent(e.target.textContent);
     setActive(!active);
   };
+
   const fetchData = async () => {
     const response = await axios.get("https://restcountries.com/v3.1/all");
     setData(response.data);
@@ -37,7 +39,10 @@ function App() {
                 src="public/search-icon.svg"
                 alt="search icon, loop"
               />
-              <SearchInput placeholder="Search for a country…" />
+              <SearchInput
+                placeholder="Search for a country…"
+                onChange={(e) => setName(e.target.value)}
+              />
             </SearchField>
           </SearchbarMain>
           <FilterField>
@@ -53,26 +58,30 @@ function App() {
           </FilterField>
         </SearchSection>
         <FlagSection>
-          {data.map((item, index) => (
-            <FlagDiv key={index}>
-              <Flag src={item.flags.png} alt={item.flags.alt} />
-              <InfoDiv>
-                <Name>{item.name.common}</Name>
-                <About>
-                  <strong>Population: </strong>
-                  {item.population}
-                </About>
-                <About>
-                  <strong>Region: </strong>
-                  {item.region}
-                </About>
-                <About>
-                  <strong>Capital: </strong>
-                  {item.capital}
-                </About>
-              </InfoDiv>
-            </FlagDiv>
-          ))}
+          {data
+            .filter((item) =>
+              item.name.common.toLowerCase().includes(name.toLowerCase())
+            )
+            .map((item, index) => (
+              <FlagDiv key={index}>
+                <Flag src={item.flags.png} alt={item.flags.alt} />
+                <InfoDiv>
+                  <Name>{item.name.common}</Name>
+                  <About>
+                    <strong>Population: </strong>
+                    {item.population}
+                  </About>
+                  <About>
+                    <strong>Region: </strong>
+                    {item.region}
+                  </About>
+                  <About>
+                    <strong>Capital: </strong>
+                    {item.capital}
+                  </About>
+                </InfoDiv>
+              </FlagDiv>
+            ))}
         </FlagSection>
       </Main>
     </>
