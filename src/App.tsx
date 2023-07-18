@@ -8,6 +8,7 @@ function App() {
   const [active, setActive] = useState(false);
   const [content, setContent] = useState("Filter by Regions(All)");
   const [name, setName] = useState("");
+  const [mode, setMode] = useState(false);
 
   const filterHandler = (e) => {
     setContent(e.target.textContent);
@@ -24,39 +25,81 @@ function App() {
 
   return (
     <>
-      <Header>
-        <Question>Where in the world?</Question>
-        <ModeDiv>
-          <Moon src="public/moon-light.svg" alt="change mode icon, moon" />
-          <ModeSpan>Dark Mode</ModeSpan>
+      <Header style={{ background: mode ? " #2B3844" : "#fff" }}>
+        <Question style={{ color: mode ? "#FFF" : "#111517" }}>
+          Where in the world?
+        </Question>
+        <ModeDiv
+          onClick={() => {
+            setMode(!mode);
+          }}
+        >
+          <Moon
+            src={mode ? "/moon-dark.svg" : "/moon-light.svg"}
+            alt="change mode icon, moon"
+          />
+          <ModeSpan style={{ color: mode ? "#FFF" : "#111517" }}>
+            Dark Mode
+          </ModeSpan>
         </ModeDiv>
       </Header>
-      <Main>
+      <Main style={{ background: mode ? "#202C36" : "#fafafa" }}>
         <SearchSection>
-          <SearchbarMain>
+          <SearchbarMain style={{ background: mode ? "#2B3844" : "#FFF" }}>
             <SearchField>
               <SearchIcon
                 src="public/search-icon.svg"
                 alt="search icon, loop"
               />
               <SearchInput
+                modeCheck={mode}
+                style={{
+                  background: mode ? "#2B3844" : "#FFF",
+                  color: mode ? "#FFF" : "#C4C4C4",
+                }}
                 placeholder="Search for a country…"
                 onChange={(e) => setName(e.target.value)}
               />
             </SearchField>
           </SearchbarMain>
-          <FilterField onClick={() => setActive(!active)}>
-            <Region>{content}</Region>
-            <Arrow src="public/arrow.svg" alt="arrow button" />
-            <RegionList style={{ display: active ? "flex" : "none" }}>
-              <RegionName onClick={filterHandler}>
+          <FilterField
+            style={{ background: mode ? "#2B3844" : "#FFF" }}
+            onClick={() => setActive(!active)}
+          >
+            <Region style={{ color: mode ? "#FFF" : "#111517" }}>
+              {content}
+            </Region>
+            <Arrow
+              src={mode ? "/arrow-dark.svg" : "/arrow.svg"}
+              alt="arrow button"
+            />
+            <RegionList
+              style={{
+                display: active ? "flex" : "none",
+                background: mode ? "#2B3844" : "#FFF",
+              }}
+            >
+              <RegionName
+                onClick={filterHandler}
+                style={{ color: mode ? "#FFF" : "#111517" }}
+              >
                 Filter by Regions(All)
               </RegionName>
-              <RegionName onClick={filterHandler}>Africa</RegionName>
-              <RegionName onClick={filterHandler}>Americas</RegionName>
-              <RegionName onClick={filterHandler}>Asia</RegionName>
-              <RegionName onClick={filterHandler}>Europe</RegionName>
-              <RegionName onClick={filterHandler}>Oceania</RegionName>
+              <RegionName modeCheck={mode} onClick={filterHandler}>
+                Africa
+              </RegionName>
+              <RegionName modeCheck={mode} onClick={filterHandler}>
+                Americas
+              </RegionName>
+              <RegionName modeCheck={mode} onClick={filterHandler}>
+                Asia
+              </RegionName>
+              <RegionName modeCheck={mode} onClick={filterHandler}>
+                Europe
+              </RegionName>
+              <RegionName modeCheck={mode} onClick={filterHandler}>
+                Oceania
+              </RegionName>
             </RegionList>
           </FilterField>
         </SearchSection>
@@ -77,17 +120,17 @@ function App() {
             .map((item, index) => (
               <FlagDiv key={index}>
                 <Flag src={item.flags.png} alt={item.flags.alt} />
-                <InfoDiv>
-                  <Name>{item.name.common}</Name>
-                  <About>
+                <InfoDiv style={{ background: mode ? "#2B3844" : "#FFF" }}>
+                  <Name modeCheck={mode}>{item.name.common}</Name>
+                  <About modeCheck={mode}>
                     <strong>Population: </strong>
                     {item.population}
                   </About>
-                  <About>
+                  <About modeCheck={mode}>
                     <strong>Region: </strong>
                     {item.region}
                   </About>
-                  <About>
+                  <About modeCheck={mode}>
                     <strong>Capital: </strong>
                     {item.capital}
                   </About>
@@ -103,7 +146,6 @@ function App() {
 export default App;
 
 const Header = styled.div`
-  background: #fff;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: row;
@@ -115,7 +157,6 @@ const Header = styled.div`
   }
 `;
 const Question = styled.span`
-  color: #111517;
   font-size: 14px;
   font-style: normal;
   font-weight: 800;
@@ -142,7 +183,6 @@ const Moon = styled.img`
 `;
 
 const ModeSpan = styled.span`
-  color: #111517;
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -158,7 +198,6 @@ const Main = styled.div`
   display: flex;
   flex-direction: column;
   padding: 24px 16px 65px 24px;
-  background: #fafafa;
   @media (min-width: 1440px) {
     padding: 48px 80px 45px 80px;
   }
@@ -180,7 +219,6 @@ const SearchbarMain = styled.div`
   flex-direction: column;
   padding: 16px 0px 16px 32px;
   border-radius: 5px;
-  background: #fff;
   box-shadow: 0px 2px 9px 0px rgba(0, 0, 0, 0.05);
   @media (min-width: 1440px) {
     flex-direction: row;
@@ -205,12 +243,14 @@ const SearchInput = styled.input`
   width: 80%;
   border: none;
   margin-left: 26px;
-  color: black;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
   outline: none;
+  &::placeholder {
+    color: ${(props) => (props.modeCheck ? "#fff" : "#C4C4C4")};
+  }
   @media (min-width: 1440px) {
     width: 400px;
   }
@@ -219,7 +259,6 @@ const SearchInput = styled.input`
 const FilterField = styled.div`
   padding: 14px 19px 14px 24px;
   border-radius: 5px;
-  background: #fff;
   box-shadow: 0px 2px 9px 0px rgba(0, 0, 0, 0.05);
   margin-top: 40px;
   width: 45%;
@@ -235,7 +274,6 @@ const FilterField = styled.div`
 `;
 
 const Region = styled.span`
-  color: #111517;
   font-family: Nunito Sans;
   font-size: 12px;
   font-style: normal;
@@ -266,7 +304,7 @@ const RegionList = styled.div`
 `;
 
 const RegionName = styled.span`
-  color: #111517;
+  color: ${(props) => (props.modeCheck ? "#fff" : "#111517")};
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -298,8 +336,6 @@ const FlagSection = styled.section`
 `;
 
 const FlagDiv = styled.div`
-  background: #fff;
-  box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.03);
   width: 267px;
   height: 336px;
   display: flex;
@@ -307,11 +343,11 @@ const FlagDiv = styled.div`
   border-radius: 5px;
   overflow: hidden;
   margin: auto;
+  justify-content: space-between;
 `;
 
 const Flag = styled.img`
-  width: 263.858px;
-  height: 172.773px;
+  height: 160px;
 `;
 
 const InfoDiv = styled.div`
@@ -322,7 +358,7 @@ const InfoDiv = styled.div`
 `;
 
 const Name = styled.span`
-  color: #111517;
+  color: ${(proprs) => (proprs.modeCheck ? "#fff" : "#111517")};
   font-family: Nunito Sans;
   font-size: 18px;
   font-style: normal;
@@ -332,11 +368,11 @@ const Name = styled.span`
 `;
 
 const About = styled.span`
-  color: #111517;
+  color: ${(proprs) => (proprs.modeCheck ? "#fff" : "#111517")};
   font-family: Nunito Sans;
   font-size: 14px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 16px;
   margin-bottom: 8px;
 `;
