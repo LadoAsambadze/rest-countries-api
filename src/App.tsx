@@ -29,7 +29,6 @@ function App() {
   const [content, setContent] = useState<String>("Filter by Regions(All)");
   const [mode, setMode] = useState<String>("false");
 
-
   const fetchData = async () => {
     const response = await axios.get("https://restcountries.com/v3.1/all");
     setData(response.data);
@@ -95,6 +94,7 @@ function App() {
 export default App;
 
 const Main = styled.div`
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 24px 16px 65px 24px;
@@ -134,6 +134,7 @@ const FlagDiv = styled.div`
   overflow: hidden;
   margin: auto;
   justify-content: space-between;
+  cursor: pointer;
 `;
 
 const Flag = styled.img`
