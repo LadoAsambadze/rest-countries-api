@@ -27,7 +27,7 @@ function App() {
   const [active, setActive] = useState<Boolean>(false);
   const [name, setName] = useState<String>("");
   const [content, setContent] = useState<String>("Filter by Regions(All)");
-  const [mode, setMode] = useState<String>("false");
+  const [mode, setMode] = useState<String>("1");
 
   const fetchData = async () => {
     const response = await axios.get("https://restcountries.com/v3.1/all");
