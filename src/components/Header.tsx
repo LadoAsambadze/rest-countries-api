@@ -1,31 +1,24 @@
 import { styled } from "styled-components";
+import { useModeStore } from "../store/store";
 
-interface HeaderType {
-  mode: String;
-  setMode: React.Dispatch<React.SetStateAction<String>>;
-}
-
-export default function Header({ mode, setMode }: HeaderType) {
+export default function Header() {
+  const { mode, setMode } = useModeStore.getState();
   return (
     <>
-      <HeaderDiv style={{ background: mode === "1" ? " #2B3844" : "#fff" }}>
-        <Question style={{ color: mode === "1" ? "#FFF" : "#111517" }}>
+      <HeaderDiv style={{ background: mode ? " #2B3844" : "#fff" }}>
+        <Question style={{ color: mode ? "#FFF" : "#111517" }}>
           Where in the world?
         </Question>
         <ModeDiv
           onClick={() => {
-            if (mode === "1") {
-              setMode("2");
-            } else {
-              setMode("1");
-            }
+            setMode(!mode);
           }}
         >
           <Moon
-            src={mode === "1" ? "/moon-dark.svg" : "/moon-light.svg"}
+            src={mode ? "/moon-dark.svg" : "/moon-light.svg"}
             alt="change mode icon, moon"
           />
-          <ModeSpan style={{ color: mode === "1" ? "#FFF" : "#111517" }}>
+          <ModeSpan style={{ color: mode ? "#FFF" : "#111517" }}>
             Dark Mode
           </ModeSpan>
         </ModeDiv>

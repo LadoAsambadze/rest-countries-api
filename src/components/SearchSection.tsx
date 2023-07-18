@@ -1,24 +1,10 @@
 import { styled } from "styled-components";
-interface NameProps {
-  mode: String;
-}
-interface sectionProps {
-  mode: String;
-  content: String;
-  setContent: React.Dispatch<React.SetStateAction<String>>;
-  active: Boolean;
-  setActive: React.Dispatch<React.SetStateAction<Boolean>>;
-  setName: React.Dispatch<React.SetStateAction<String>>;
-}
+import { useActive, useContent, useModeStore, useName } from "../store/store";
 
-export default function SearchSection({
-  mode,
-  content,
-  setContent,
-  active,
-  setActive,
-  setName,
-}: sectionProps) {
+interface NameProps {
+  mode: boolean;
+}
+export default function SearchSection() {
   const filterHandler = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     const textContent = (e.target as HTMLSpanElement).textContent;
     if (textContent) {
@@ -27,19 +13,25 @@ export default function SearchSection({
     setActive(!active);
   };
 
+  const { mode } = useModeStore.getState();
+  const { active, setActive } = useActive.getState();
+  const { content, setContent } = useContent.getState();
+  const { setName } = useName.getState();
+
   return (
     <>
       <SearchSectionMain>
-        <SearchbarMain
-          style={{ background: mode === "1" ? "#2B3844" : "#FFF" }}
-        >
+        <SearchbarMain style={{ background: mode ? "#2B3844" : "#FFF" }}>
           <SearchField>
-            <SearchIcon src={mode === "1" ? "/search-dark.svg" : "/search-icon.svg"} alt="search icon, loop" />
+            <SearchIcon
+              src={mode ? "/search-dark.svg" : "/search-icon.svg"}
+              alt="search icon, loop"
+            />
             <SearchInput
               mode={mode}
               style={{
-                background: mode === "1" ? "#2B3844" : "#FFF",
-                color: mode === "1" ? "#FFF" : "#161515",
+                background: mode ? "#2B3844" : "#FFF",
+                color: mode ? "#FFF" : "#161515",
               }}
               placeholder="Search for a country…"
               onChange={(e) => setName(e.target.value)}
@@ -47,26 +39,28 @@ export default function SearchSection({
           </SearchField>
         </SearchbarMain>
         <FilterField
-          style={{ background: mode === "1" ? "#2B3844" : "#FFF" }}
-          onClick={() => setActive(!active)}
+          style={{ background: mode ? "#2B3844" : "#FFF" }}
+          onClick={() => {
+            setActive(!active);
+          }}
         >
-          <Region style={{ color: mode === "1" ? "#FFF" : "#111517" }}>
+          <Region style={{ color: mode ? "#FFF" : "#111517" }}>
             {content}
           </Region>
           <Arrow
-            src={mode === "1" ? "/arrow-dark.svg" : "/arrow.svg"}
+            src={mode ? "/arrow-dark.svg" : "/arrow.svg"}
             alt="arrow button"
           />
           <RegionList
             style={{
               display: active ? "flex" : "none",
-              background: mode === "1" ? "#2B3844" : "#FFF",
+              background: mode ? "#2B3844" : "#FFF",
             }}
           >
             <RegionName
               mode={mode}
               onClick={filterHandler}
-              style={{ color: mode === "1" ? "#FFF" : "#111517" }}
+              style={{ color: mode ? "#FFF" : "#111517" }}
             >
               Filter by Regions(All)
             </RegionName>
@@ -138,7 +132,7 @@ const SearchInput = styled.input<NameProps>`
   line-height: 20px;
   outline: none;
   &::placeholder {
-    color: ${(props) => (props.mode === "1" ? "#fff" : "#C4C4C4")};
+    color: ${(props) => (props.mode ? "#fff" : "#C4C4C4")};
   }
   @media (min-width: 1440px) {
     width: 400px;
@@ -193,7 +187,7 @@ const RegionList = styled.div`
 `;
 
 const RegionName = styled.span<NameProps>`
-  color: ${(props) => (props.mode === "1" ? "#fff" : "#111517")};
+  color: ${(props) => (props.mode ? "#fff" : "#111517")};
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
