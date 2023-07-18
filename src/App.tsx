@@ -6,9 +6,8 @@ import { useEffect, useState } from "react";
 function App() {
   const [data, setData] = useState([]);
   const [active, setActive] = useState(false);
-  const [content, setContent] = useState("Filter by Regions");
+  const [content, setContent] = useState("Filter by Regions(All)");
   const [name, setName] = useState("");
-  console.log(data);
 
   const filterHandler = (e) => {
     setContent(e.target.textContent);
@@ -310,7 +309,10 @@ const FlagDiv = styled.div`
   margin: auto;
 `;
 
-const Flag = styled.img``;
+const Flag = styled.img`
+  width: 263.858px;
+  height: 172.773px;
+`;
 
 const InfoDiv = styled.div`
   padding: 24px 0px 38px 24px;
