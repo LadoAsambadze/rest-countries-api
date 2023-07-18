@@ -19,16 +19,16 @@ interface setTypes {
 }
 
 interface NameProps {
-  mode: Boolean;
+  mode: String;
 }
-
 
 function App() {
   const [data, setData] = useState<setTypes[]>([]);
   const [active, setActive] = useState<Boolean>(false);
   const [name, setName] = useState<String>("");
   const [content, setContent] = useState<String>("Filter by Regions(All)");
-  const [mode, setMode] = useState<Boolean>(false);
+  const [mode, setMode] = useState<String>("false");
+
 
   const fetchData = async () => {
     const response = await axios.get("https://restcountries.com/v3.1/all");
@@ -41,7 +41,7 @@ function App() {
   return (
     <>
       <Header mode={mode} setMode={setMode} />
-      <Main style={{ background: mode ? "#202C36" : "#fafafa" }}>
+      <Main style={{ background: mode === "1" ? "#202C36" : "#fafafa" }}>
         <SearchSection
           mode={mode}
           content={content}
@@ -67,7 +67,9 @@ function App() {
             .map((item, index) => (
               <FlagDiv key={index}>
                 <Flag src={item.flags.png} alt={item.flags.alt} />
-                <InfoDiv style={{ background: mode ? "#2B3844" : "#FFF" }}>
+                <InfoDiv
+                  style={{ background: mode === "1" ? "#2B3844" : "#FFF" }}
+                >
                   <Name mode={mode}>{item.name.common}</Name>
                   <About mode={mode}>
                     <strong>Population: </strong>
@@ -146,7 +148,7 @@ const InfoDiv = styled.div`
 `;
 
 const Name = styled.span<NameProps>`
-  color: ${(props) => (props.mode ? "#fff" : "#111517")};
+  color: ${(props) => (props.mode === "1" ? "#fff" : "#111517")};
   font-family: Nunito Sans;
   font-size: 18px;
   font-style: normal;
@@ -156,7 +158,7 @@ const Name = styled.span<NameProps>`
 `;
 
 const About = styled.span<NameProps>`
-  color: ${(proprs) => (proprs.mode ? "#fff" : "#111517")};
+  color: ${(proprs) => (proprs.mode === "1" ? "#fff" : "#111517")};
   font-family: Nunito Sans;
   font-size: 14px;
   font-style: normal;
