@@ -34,7 +34,7 @@ export default function SearchSection({
           style={{ background: mode === "1" ? "#2B3844" : "#FFF" }}
         >
           <SearchField>
-            <SearchIcon src="public/search-icon.svg" alt="search icon, loop" />
+            <SearchIcon src={mode === "1" ? "/search-dark.svg" : "/search-icon.svg"} alt="search icon, loop" />
             <SearchInput
               mode={mode}
               style={{
