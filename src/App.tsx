@@ -5,12 +5,30 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import SearchSection from "./components/SearchSection";
 
+interface setTypes {
+  name: {
+    common: string;
+  };
+  flags: {
+    png: string;
+    alt: string;
+  };
+  population: number;
+  region: string;
+  capital: string;
+}
+
+interface NameProps {
+  mode: Boolean;
+}
+
+
 function App() {
-  const [data, setData] = useState([]);
-  const [active, setActive] = useState(false);
-  const [name, setName] = useState("");
-  const [content, setContent] = useState("Filter by Regions(All)");
-  const [mode, setMode] = useState(false);
+  const [data, setData] = useState<setTypes[]>([]);
+  const [active, setActive] = useState<Boolean>(false);
+  const [name, setName] = useState<String>("");
+  const [content, setContent] = useState<String>("Filter by Regions(All)");
+  const [mode, setMode] = useState<Boolean>(false);
 
   const fetchData = async () => {
     const response = await axios.get("https://restcountries.com/v3.1/all");
@@ -26,12 +44,10 @@ function App() {
       <Main style={{ background: mode ? "#202C36" : "#fafafa" }}>
         <SearchSection
           mode={mode}
-          setMode={setMode}
           content={content}
           setContent={setContent}
           active={active}
           setActive={setActive}
-          name={name}
           setName={setName}
         />
         <FlagSection>
@@ -52,16 +68,16 @@ function App() {
               <FlagDiv key={index}>
                 <Flag src={item.flags.png} alt={item.flags.alt} />
                 <InfoDiv style={{ background: mode ? "#2B3844" : "#FFF" }}>
-                  <Name modeCheck={mode}>{item.name.common}</Name>
-                  <About modeCheck={mode}>
+                  <Name mode={mode}>{item.name.common}</Name>
+                  <About mode={mode}>
                     <strong>Population: </strong>
                     {item.population}
                   </About>
-                  <About modeCheck={mode}>
+                  <About mode={mode}>
                     <strong>Region: </strong>
                     {item.region}
                   </About>
-                  <About modeCheck={mode}>
+                  <About mode={mode}>
                     <strong>Capital: </strong>
                     {item.capital}
                   </About>
@@ -129,8 +145,8 @@ const InfoDiv = styled.div`
   align-items: flex-start;
 `;
 
-const Name = styled.span`
-  color: ${(proprs) => (proprs.modeCheck ? "#fff" : "#111517")};
+const Name = styled.span<NameProps>`
+  color: ${(props) => (props.mode ? "#fff" : "#111517")};
   font-family: Nunito Sans;
   font-size: 18px;
   font-style: normal;
@@ -139,8 +155,8 @@ const Name = styled.span`
   margin-bottom: 16px;
 `;
 
-const About = styled.span`
-  color: ${(proprs) => (proprs.modeCheck ? "#fff" : "#111517")};
+const About = styled.span<NameProps>`
+  color: ${(proprs) => (proprs.mode ? "#fff" : "#111517")};
   font-family: Nunito Sans;
   font-size: 14px;
   font-style: normal;

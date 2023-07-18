@@ -1,6 +1,11 @@
 import { styled } from "styled-components";
 
-export default function Header({ mode, setMode }) {
+interface HeaderType {
+  mode: Boolean;
+  setMode: React.Dispatch<React.SetStateAction<Boolean>>;
+}
+
+export default function Header({ mode, setMode }: HeaderType) {
   return (
     <>
       <HeaderDiv style={{ background: mode ? " #2B3844" : "#fff" }}>

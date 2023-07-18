@@ -1,19 +1,32 @@
 import { styled } from "styled-components";
+interface NameProps {
+  mode: Boolean;
+}
+interface sectionProps {
+  mode: Boolean;
+  content: String;
+  setContent: React.Dispatch<React.SetStateAction<String>>;
+  active: Boolean;
+  setActive: React.Dispatch<React.SetStateAction<Boolean>>;
+  setName: React.Dispatch<React.SetStateAction<String>>;
+}
 
 export default function SearchSection({
   mode,
-  setMode,
   content,
   setContent,
   active,
   setActive,
-  name,
   setName,
-}) {
-  const filterHandler = (e) => {
-    setContent(e.target.textContent);
+}: sectionProps) {
+  const filterHandler = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    const textContent = (e.target as HTMLSpanElement).textContent;
+    if (textContent) {
+      setContent(textContent);
+    }
     setActive(!active);
   };
+
   return (
     <>
       <SearchSectionMain>
@@ -21,7 +34,7 @@ export default function SearchSection({
           <SearchField>
             <SearchIcon src="public/search-icon.svg" alt="search icon, loop" />
             <SearchInput
-              modeCheck={mode}
+              mode={mode}
               style={{
                 background: mode ? "#2B3844" : "#FFF",
                 color: mode ? "#FFF" : "#161515",
@@ -49,24 +62,25 @@ export default function SearchSection({
             }}
           >
             <RegionName
+              mode={mode}
               onClick={filterHandler}
               style={{ color: mode ? "#FFF" : "#111517" }}
             >
               Filter by Regions(All)
             </RegionName>
-            <RegionName modeCheck={mode} onClick={filterHandler}>
+            <RegionName mode={mode} onClick={filterHandler}>
               Africa
             </RegionName>
-            <RegionName modeCheck={mode} onClick={filterHandler}>
+            <RegionName mode={mode} onClick={filterHandler}>
               Americas
             </RegionName>
-            <RegionName modeCheck={mode} onClick={filterHandler}>
+            <RegionName mode={mode} onClick={filterHandler}>
               Asia
             </RegionName>
-            <RegionName modeCheck={mode} onClick={filterHandler}>
+            <RegionName mode={mode} onClick={filterHandler}>
               Europe
             </RegionName>
-            <RegionName modeCheck={mode} onClick={filterHandler}>
+            <RegionName mode={mode} onClick={filterHandler}>
               Oceania
             </RegionName>
           </RegionList>
@@ -112,7 +126,7 @@ const SearchIcon = styled.img`
   height: 16px;
 `;
 
-const SearchInput = styled.input`
+const SearchInput = styled.input<NameProps>`
   width: 80%;
   border: none;
   margin-left: 26px;
@@ -122,7 +136,7 @@ const SearchInput = styled.input`
   line-height: 20px;
   outline: none;
   &::placeholder {
-    color: ${(props) => (props.modeCheck ? "#fff" : "#C4C4C4")};
+    color: ${(props) => (props.mode ? "#fff" : "#C4C4C4")};
   }
   @media (min-width: 1440px) {
     width: 400px;
@@ -176,8 +190,8 @@ const RegionList = styled.div`
   }
 `;
 
-const RegionName = styled.span`
-  color: ${(props) => (props.modeCheck ? "#fff" : "#111517")};
+const RegionName = styled.span<NameProps>`
+  color: ${(props) => (props.mode ? "#fff" : "#111517")};
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
