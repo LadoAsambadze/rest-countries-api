@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import "./App.css";
+import "../App.css"
 import axios from "axios";
 import { useEffect } from "react";
 import Header from "../components/Header";
