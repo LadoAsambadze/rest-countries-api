@@ -54,7 +54,9 @@ export default function Selected() {
               <About>
                 <FirstText>
                   <InfoOne mode={mode}>
-                    <strong>Native Name: </strong>
+                    <strong>
+                      {item.name.nativeName ? "Native Name: " : null}
+                    </strong>
                     {item.name.nativeName &&
                       Object.values(item.name.nativeName).map(
                         (native, index, arr) =>
@@ -66,37 +68,39 @@ export default function Selected() {
                       )}
                   </InfoOne>
                   <InfoOne mode={mode}>
-                    <strong>Population: </strong>
+                    <strong>{item.population ? "Population: " : null} </strong>
                     {item.population}
                   </InfoOne>
                   <InfoOne mode={mode}>
-                    <strong>Region: </strong> {item.region}
+                    <strong>{item.region ? "Region: " : null} </strong>{" "}
+                    {item.region}
                   </InfoOne>
                   <InfoOne mode={mode}>
-                    <strong>Sub Region: </strong>
+                    <strong>{item.subregion ? "Sub Region: " : null} </strong>
                     {item.subregion}
                   </InfoOne>
                   <InfoOne mode={mode}>
-                    <strong>Capital: </strong> {item.capital}
+                    <strong>{item.capital ? "Capital: " : null} </strong>{" "}
+                    {item.capital}
                   </InfoOne>
                 </FirstText>
                 <SecondText>
                   <InfoOne mode={mode}>
-                    <strong>Top Level Domain: </strong>{" "}
+                    <strong>{item.tld ? "Top Level Domain: " : null} </strong>{" "}
                     {item.tld &&
                       Object.values(item.tld).map((tl, index) => (
                         <Text key={index}>{tl}</Text>
                       ))}
                   </InfoOne>
                   <InfoOne mode={mode}>
-                    <strong>Currencies: </strong>
+                    <strong>{item.currencies ? "Currencies: " : null}</strong>
                     {item.currencies &&
                       Object.values(item.currencies).map((curr, index) => (
                         <Text key={index}>{curr.name}</Text>
                       ))}
                   </InfoOne>
                   <InfoOne mode={mode}>
-                    <strong>Languages: </strong>
+                    <strong>{item.languages ? "Languages: " : null} </strong>
                     {item.languages &&
                       Object.values(item.languages).map((lang) => (
                         <Text key={lang}>{lang}</Text>
@@ -106,7 +110,7 @@ export default function Selected() {
               </About>
               <BorderSection>
                 <Border style={{ color: mode ? "#fff" : "#111517" }}>
-                  Border Countries:
+                  {item.borders ? " Border Countries:" : null}
                 </Border>
                 <ListBox>
                   {item.borders &&
