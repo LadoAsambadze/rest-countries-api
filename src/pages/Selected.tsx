@@ -5,40 +5,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-type DataItem = {
-  flags: {
-    png: string;
-    alt: string;
-  };
-  name: {
-    common: string;
-    nativeName: {
-      [key: string]: {
-        common: string;
-      };
-    };
-  };
-  population: number;
-  region: string;
-  subregion: string;
-  capital: string;
-  tld: string[];
-  currencies: {
-    [key: string]: {
-      name: string;
-    };
-  };
-  languages: {
-    [key: string]: string;
-  };
-  borders: string[];
-};
+import useData from "../store/useData";
 
 export default function Selected() {
-  const [data, setData] = useState<DataItem[]>([]);
   const params = useParams();
+  const data = useData((state) => state.data);
+  const setData = useData((state) => state.setData);
+  const filteredData = data.filter((item) => item.name.common === params.name);
   const navigate = useNavigate();
-
   const fetchData = async () => {
     const response = await axios.get(
       `https://restcountries.com/v3.1/name/${params.name}?fullText=true`
@@ -47,13 +21,13 @@ export default function Selected() {
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [data]);
 
   return (
     <>
       <Header />
       <Main>
-        {data.map((item, index) => (
+        {filteredData.map((item, index) => (
           <InfoDiv key={index}>
             <div>
               <ButtonDiv

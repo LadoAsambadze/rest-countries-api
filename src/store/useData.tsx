@@ -1,17 +1,32 @@
 import { create, StoreApi } from "zustand";
 
 interface Data {
-  name: {
-    common: string;
-  };
-
   flags: {
     png: string;
     alt: string;
   };
+  name: {
+    common: string;
+    nativeName: {
+      [key: string]: {
+        common: string;
+      };
+    };
+  };
   population: number;
   region: string;
+  subregion: string;
   capital: string;
+  tld: string[];
+  currencies: {
+    [key: string]: {
+      name: string;
+    };
+  };
+  languages: {
+    [key: string]: string;
+  };
+  borders: string[];
 }
 
 interface DataStore {
