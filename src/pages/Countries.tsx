@@ -8,6 +8,7 @@ import useContent from "../store/useContent";
 import useData from "../store/useData";
 import useName from "../store/useName";
 import useModeStore from "../store/useMode";
+import { useNavigate } from "react-router-dom";
 
 interface NameProps {
   mode: boolean;
@@ -18,6 +19,7 @@ function Countries() {
   const mode = useModeStore((state) => state.mode);
   const content = useContent((state) => state.content);
   const name = useName((state) => state.name);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const response = await axios.get("https://restcountries.com/v3.1/all");
@@ -47,7 +49,12 @@ function Countries() {
               item.name.common.toLowerCase().includes(name.toLowerCase())
             )
             .map((item, index) => (
-              <FlagDiv key={index}>
+              <FlagDiv
+                key={index}
+                onClick={() => {
+                  navigate(`/selected/${item.name.common}`);
+                }}
+              >
                 <Flag src={item.flags.png} alt={item.flags.alt} />
                 <InfoDiv style={{ background: mode ? "#2B3844" : "#FFF" }}>
                   <Name mode={mode}>{item.name.common}</Name>

@@ -4,6 +4,7 @@ interface Data {
   name: {
     common: string;
   };
+
   flags: {
     png: string;
     alt: string;

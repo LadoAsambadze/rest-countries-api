@@ -1,65 +1,138 @@
 import { styled } from "styled-components";
 import "../App.css";
 import Header from "../components/Header";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+type DataItem = {
+  flags: {
+    png: string;
+    alt: string;
+  };
+  name: {
+    common: string;
+    nativeName: {
+      [key: string]: {
+        common: string;
+      };
+    };
+  };
+  population: number;
+  region: string;
+  subregion: string;
+  capital: string;
+  tld: string[];
+  currencies: {
+    [key: string]: {
+      name: string;
+    };
+  };
+  languages: {
+    [key: string]: string;
+  };
+  borders: string[];
+};
 
 export default function Selected() {
+  const [data, setData] = useState<DataItem[]>([]);
+  const params = useParams();
+  const navigate = useNavigate();
+
+  const fetchData = async () => {
+    const response = await axios.get(
+      `https://restcountries.com/v3.1/name/${params.name}?fullText=true`
+    );
+    setData(response.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <Header />
       <Main>
-        <InfoDiv>
-          <div>
-            <ButtonDiv>
-              <ArrowImg src="/back-light.svg" />
-              <Back>Back</Back>
-            </ButtonDiv>
-            <Flag src="/germany.png" />
-          </div>
-          <TextInfo>
-            <Name>Belgium</Name>
-            <About>
-              <FirstText>
-                <InfoOne>
-                  <strong>Native Name: </strong> België
-                </InfoOne>
-                <InfoOne>
-                  <strong>Native Name: </strong> België
-                </InfoOne>
-                <InfoOne>
-                  <strong>Native Name: </strong> België
-                </InfoOne>
-                <InfoOne>
-                  <strong>Native Name: </strong> België
-                </InfoOne>
-                <InfoOne>
-                  <strong>Native Name: </strong> België
-                </InfoOne>
-                <InfoOne>
-                  <strong>Native Name: </strong> België
-                </InfoOne>
-              </FirstText>
-              <SecondText>
-                <InfoOne>
-                  <strong>Native Name: </strong> België
-                </InfoOne>
-                <InfoOne>
-                  <strong>Native Name: </strong> België
-                </InfoOne>
-                <InfoOne>
-                  <strong>Native Name: </strong> België
-                </InfoOne>
-              </SecondText>
-            </About>
-            <BorderSection>
-              <Border>Border Countries: </Border>
-              <ListBox>
-                <Box>Germany</Box>
-                <Box>Germany</Box>
-                <Box>Germany</Box>
-              </ListBox>
-            </BorderSection>
-          </TextInfo>
-        </InfoDiv>
+        {data.map((item, index) => (
+          <InfoDiv key={index}>
+            <div>
+              <ButtonDiv
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                <ArrowImg src="/back-light.svg" />
+                <Back>Back</Back>
+              </ButtonDiv>
+              <Flag src={item.flags.png} alt={item.flags.alt} />
+            </div>
+            <TextInfo>
+              <Name>{item.name.common}</Name>
+              <About>
+                <FirstText>
+                  <InfoOne>
+                    <strong>Native Name: </strong>
+                    {item.name.nativeName &&
+                      Object.values(item.name.nativeName).map(
+                        (native, index, arr) =>
+                          index === arr.length - 1 ? (
+                            <Text key={index}>
+                              {Object.values(native.common)}
+                            </Text>
+                          ) : null
+                      )}
+                  </InfoOne>
+                  <InfoOne>
+                    <strong>Population: </strong>
+                    {item.population}
+                  </InfoOne>
+                  <InfoOne>
+                    <strong>Region: </strong> {item.region}
+                  </InfoOne>
+                  <InfoOne>
+                    <strong>Sub Region: </strong>
+                    {item.subregion}
+                  </InfoOne>
+                  <InfoOne>
+                    <strong>Capital: </strong> {item.capital}
+                  </InfoOne>
+                </FirstText>
+                <SecondText>
+                  <InfoOne>
+                    <strong>Top Level Domain: </strong>{" "}
+                    {item.tld &&
+                      Object.values(item.tld).map((tl, index) => (
+                        <Text key={index}>{tl}</Text>
+                      ))}
+                  </InfoOne>
+                  <InfoOne>
+                    <strong>Currencies: </strong>
+                    {item.currencies &&
+                      Object.values(item.currencies).map((curr, index) => (
+                        <Text key={index}>{curr.name}</Text>
+                      ))}
+                  </InfoOne>
+                  <InfoOne>
+                    <strong>Languages: </strong>
+                    {item.languages &&
+                      Object.values(item.languages).map((lang) => (
+                        <Text key={lang}>{lang}</Text>
+                      ))}
+                  </InfoOne>
+                </SecondText>
+              </About>
+              <BorderSection>
+                <Border>Border Countries: </Border>
+                <ListBox>
+                  {item.borders &&
+                    item.borders.map((border) => (
+                      <Box key={border}>{border}</Box>
+                    ))}
+                </ListBox>
+              </BorderSection>
+            </TextInfo>
+          </InfoDiv>
+        ))}
       </Main>
     </>
   );
@@ -222,4 +295,8 @@ const SecondText = styled.div`
     margin-left: 141px;
     margin-top: 0;
   }
+`;
+
+const Text = styled.span`
+  margin-left: 5px;
 `;

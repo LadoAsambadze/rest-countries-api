@@ -7,7 +7,7 @@ export default function App() {
     <>
       <Routes>
         <Route path="/" element={<Countries />} />
-        <Route path="/selected" element={<Selected />} />
+        <Route path="/selected/:name" element={<Selected />} />
       </Routes>
     </>
   );
