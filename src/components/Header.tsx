@@ -1,8 +1,9 @@
 import { styled } from "styled-components";
-import { useModeStore } from "../store/store";
+import useModeStore from "../store/useMode";
 
 export default function Header() {
-  const { mode, setMode } = useModeStore.getState();
+  const mode = useModeStore((state) => state.mode);
+  const setMode = useModeStore((state) => state.setMode);
   return (
     <>
       <HeaderDiv style={{ background: mode ? " #2B3844" : "#fff" }}>

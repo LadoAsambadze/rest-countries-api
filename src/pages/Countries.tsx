@@ -1,19 +1,23 @@
 import { styled } from "styled-components";
-import "../App.css"
+import "../App.css";
 import axios from "axios";
 import { useEffect } from "react";
 import Header from "../components/Header";
 import SearchSection from "../components/SearchSection";
-import { useContent, useData, useModeStore, useName } from "../store/store";
+import useContent from "../store/useContent";
+import useData from "../store/useData";
+import useName from "../store/useName";
+import useModeStore from "../store/useMode";
 
 interface NameProps {
   mode: boolean;
 }
 function Countries() {
-  const { data, setData } = useData.getState();
-  const { content } = useContent.getState();
-  const { mode } = useModeStore.getState();
-  const { name } = useName.getState();
+  const data = useData((state) => state.data);
+  const setData = useData((state) => state.setData);
+  const mode = useModeStore((state) => state.mode);
+  const content = useContent((state) => state.content);
+  const name = useName((state) => state.name);
 
   const fetchData = async () => {
     const response = await axios.get("https://restcountries.com/v3.1/all");

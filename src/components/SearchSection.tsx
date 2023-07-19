@@ -1,9 +1,13 @@
 import { styled } from "styled-components";
-import { useActive, useContent, useModeStore, useName } from "../store/store";
+import useModeStore from "../store/useMode";
+import useContent from "../store/useContent";
+import useActive from "../store/useActive";
+import useName from "../store/useName";
 
 interface NameProps {
   mode: boolean;
 }
+
 export default function SearchSection() {
   const filterHandler = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     const textContent = (e.target as HTMLSpanElement).textContent;
@@ -13,10 +17,12 @@ export default function SearchSection() {
     setActive(!active);
   };
 
-  const { mode } = useModeStore.getState();
-  const { active, setActive } = useActive.getState();
-  const { content, setContent } = useContent.getState();
-  const { setName } = useName.getState();
+  const mode = useModeStore((state) => state.mode);
+  const content = useContent((state) => state.content);
+  const setContent = useContent((state) => state.setContent);
+  const setActive = useActive((state) => state.setActive);
+  const active = useActive((state) => state.active);
+  const setName = useName((state) => state.setName);
 
   return (
     <>
