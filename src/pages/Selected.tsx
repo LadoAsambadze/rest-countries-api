@@ -2,12 +2,18 @@ import { styled } from "styled-components";
 import "../App.css";
 import Header from "../components/Header";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useData from "../store/useData";
+import useModeStore from "../store/useMode";
+
+interface NameProps {
+  mode: Boolean;
+}
 
 export default function Selected() {
+  const mode = useModeStore((state) => state.mode);
   const params = useParams();
   const data = useData((state) => state.data);
   const setData = useData((state) => state.setData);
@@ -26,25 +32,28 @@ export default function Selected() {
   return (
     <>
       <Header />
-      <Main>
+      <Main style={{ background: mode ? "#202C36" : "#fafafa" }}>
         {filteredData.map((item, index) => (
           <InfoDiv key={index}>
             <div>
               <ButtonDiv
+                style={{ background: mode ? "#2B3844" : "#fff" }}
                 onClick={() => {
                   navigate("/");
                 }}
               >
                 <ArrowImg src="/back-light.svg" />
-                <Back>Back</Back>
+                <Back style={{ color: mode ? "#FFF" : "#111517" }}>Back</Back>
               </ButtonDiv>
               <Flag src={item.flags.png} alt={item.flags.alt} />
             </div>
             <TextInfo>
-              <Name>{item.name.common}</Name>
+              <Name style={{ color: mode ? "#fff" : "#111517" }}>
+                {item.name.common}
+              </Name>
               <About>
                 <FirstText>
-                  <InfoOne>
+                  <InfoOne mode={mode}>
                     <strong>Native Name: </strong>
                     {item.name.nativeName &&
                       Object.values(item.name.nativeName).map(
@@ -56,37 +65,37 @@ export default function Selected() {
                           ) : null
                       )}
                   </InfoOne>
-                  <InfoOne>
+                  <InfoOne mode={mode}>
                     <strong>Population: </strong>
                     {item.population}
                   </InfoOne>
-                  <InfoOne>
+                  <InfoOne mode={mode}>
                     <strong>Region: </strong> {item.region}
                   </InfoOne>
-                  <InfoOne>
+                  <InfoOne mode={mode}>
                     <strong>Sub Region: </strong>
                     {item.subregion}
                   </InfoOne>
-                  <InfoOne>
+                  <InfoOne mode={mode}>
                     <strong>Capital: </strong> {item.capital}
                   </InfoOne>
                 </FirstText>
                 <SecondText>
-                  <InfoOne>
+                  <InfoOne mode={mode}>
                     <strong>Top Level Domain: </strong>{" "}
                     {item.tld &&
                       Object.values(item.tld).map((tl, index) => (
                         <Text key={index}>{tl}</Text>
                       ))}
                   </InfoOne>
-                  <InfoOne>
+                  <InfoOne mode={mode}>
                     <strong>Currencies: </strong>
                     {item.currencies &&
                       Object.values(item.currencies).map((curr, index) => (
                         <Text key={index}>{curr.name}</Text>
                       ))}
                   </InfoOne>
-                  <InfoOne>
+                  <InfoOne mode={mode}>
                     <strong>Languages: </strong>
                     {item.languages &&
                       Object.values(item.languages).map((lang) => (
@@ -96,11 +105,21 @@ export default function Selected() {
                 </SecondText>
               </About>
               <BorderSection>
-                <Border>Border Countries: </Border>
+                <Border style={{ color: mode ? "#fff" : "#111517" }}>
+                  Border Countries:
+                </Border>
                 <ListBox>
                   {item.borders &&
                     item.borders.map((border) => (
-                      <Box key={border}>{border}</Box>
+                      <Box
+                        style={{
+                          color: mode ? "#fff" : "#111517",
+                          background: mode ? "#2B3844" : "#fff",
+                        }}
+                        key={border}
+                      >
+                        {border}
+                      </Box>
                     ))}
                 </ListBox>
               </BorderSection>
@@ -116,7 +135,6 @@ const Main = styled.section`
   display: flex;
   flex-direction: column;
   padding: 40px 28px 60px 28px;
-  background: #fafafa;
   align-items: center;
   justify-content: center;
   @media (min-width: 1440px) {
@@ -127,7 +145,6 @@ const Main = styled.section`
 
 const ButtonDiv = styled.div`
   border-radius: 2px;
-  background: #fff;
   box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.29);
   padding: 6px 23px 6px 23px;
   display: flex;
@@ -145,7 +162,6 @@ const ArrowImg = styled.img`
 `;
 
 const Back = styled.span`
-  color: #111517;
   font-size: 14px;
   font-style: normal;
   font-weight: 300;
@@ -185,8 +201,8 @@ const Name = styled.h1`
   }
 `;
 
-const InfoOne = styled.span`
-  color: #111517;
+const InfoOne = styled.span<NameProps>`
+  color: ${(props) => (props.mode ? "#fff" : "#111517")};
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -218,20 +234,25 @@ const Border = styled.h1`
 `;
 
 const ListBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
   @media (min-width: 1440px) {
     margin-top: 0;
     margin-left: 16px;
   }
 `;
 const Box = styled.div`
-  padding: 6px 16px 6px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 2px;
-  background: #fff;
+  margin-left: 10px;
+  margin-top: 5px;
+  width: 96px;
+  height: 28px;
+
   box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.1);
   @media (min-width: 1440px) {
     margin-left: 16px;
