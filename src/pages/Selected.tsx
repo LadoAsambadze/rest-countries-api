@@ -42,7 +42,7 @@ export default function Selected() {
                   navigate("/");
                 }}
               >
-                <ArrowImg src="/back-light.svg" />
+                <ArrowImg src={mode ? "/dark-arrow.svg" : "/back-light.svg"} />
                 <Back style={{ color: mode ? "#FFF" : "#111517" }}>Back</Back>
               </ButtonDiv>
               <Flag src={item.flags.png} alt={item.flags.alt} />
